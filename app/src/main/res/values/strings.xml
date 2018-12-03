@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Telecom Project 4</string>
+    <string name="edit_message">Enter a Message</string>
+    <string name="button_send">Send</string>
+    <string name="button_refresh">REFRESH</string>
+    <string name="button_showCellTowers">Show Visible Cell Towers</string>
+    <string name="text_cellTowerHeader">All Visible Cell Towers:</string>
+    <string name="button_saveCellTowers">Save All</string>
+    <string name="service_name">Stingray Detector</string>
+    <string name="button_startService">Start Stingray Dectector</string>
+</resources>
