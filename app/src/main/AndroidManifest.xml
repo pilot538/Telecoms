@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -29,11 +30,19 @@
                 android:value=".MainActivity" />
         </activity>
 
+        <activity android:name=".WhitelistedCellTowers"
+            android:parentActivityName=".MainActivity">
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
         <service
             android:name=".StingrayDetector"
             android:enabled="true"
             android:exported="true"
-            android:label="@string/service_name"></service>
+            android:label="@string/service_name" />
     </application>
 
 </manifest>

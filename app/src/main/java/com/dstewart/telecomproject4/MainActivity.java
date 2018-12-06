@@ -1,9 +1,12 @@
 package com.dstewart.telecomproject4;
 
 import android.Manifest;
+import android.app.ActivityManager;
+import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.provider.SyncStateContract;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,9 +18,11 @@ import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.telephony.gsm.GsmCellLocation;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.sql.BatchUpdateException;
 import java.util.List;
 
 
@@ -84,9 +89,45 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void showWhitelistedTowers(View view) {
+        Intent intent = new Intent(this, WhitelistedCellTowers.class);
+        startActivity(intent);
+    }
+
     public void refreshCellInfo(View view) {
         Intent intent = getIntent();
         finish();
         startActivity(intent);
     }
+
+    public void toggleStingrayDetector(View view) {
+        //Is the service running?
+        if(!isMyServiceRunning(StingrayDetector.class)) {
+            //If so
+            Intent startIntent = new Intent(MainActivity.this, StingrayDetector.class);
+            startIntent.setAction(StingrayDetector.ACTION_START_STINGRAY_DETECTOR_SERVICE);
+            startService(startIntent);
+            Button toggleButton = (Button)findViewById(R.id.toggleServiceButton);
+            toggleButton.setText(R.string.button_stopService);
+        }
+        else {
+            //If not
+            Intent stopIntent = new Intent(this, StingrayDetector.class);
+            stopIntent.setAction(StingrayDetector.ACTION_STOP_STINGRAY_DETECTOR_SERVICE);
+            startService(stopIntent);
+            Button toggleButton = (Button)findViewById(R.id.toggleServiceButton);
+            toggleButton.setText(R.string.button_startService);
+        }
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

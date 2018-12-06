@@ -8,4 +8,14 @@
     <string name="button_saveCellTowers">Save All</string>
     <string name="service_name">Stingray Detector</string>
     <string name="button_startService">Start Stingray Dectector</string>
+    <string name="button_showWhitelistedCellTowers">Show Whitelisted Cell Towers</string>
+    <string name="text_whitelistedCellTowersHeader">Whitelisted Cell Towers</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="alert_NoFileFound">No Towers Whitelisted</string>
+    <string name="text_noWhitelistedCellTowers">Go save some towers to whitelist!</string>
+    <string name="button_stopService">Stop Stingray Dectector</string>
+    <string name="notification_title">Stingray Detector</string>
+    <string name="notification_message">Running</string>
 </resources>
