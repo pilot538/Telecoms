@@ -10,7 +10,14 @@ import android.provider.SyncStateContract;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.CellIdentityCdma;
+import android.telephony.CellIdentityGsm;
+import android.telephony.CellIdentityLte;
 import android.telephony.CellInfo;
+import android.telephony.CellInfoCdma;
+import android.telephony.CellInfoGsm;
+import android.telephony.CellInfoLte;
+import android.telephony.CellLocation;
 import android.telephony.CellSignalStrength;
 import android.telephony.NeighboringCellInfo;
 import android.telephony.PhoneStateListener;
@@ -45,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         String networkOperator = "NO PERMISSIONS";
         String networkOperatorName = "NO PERMISSIONS";
         int signalStrength = -1;
-        int LAC = -1;
+        String LAC = "NO PERMISSIONS";
         int cellID = -1;
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
@@ -61,9 +68,22 @@ public class MainActivity extends AppCompatActivity {
              signalStrength = tm.getSignalStrength().getGsmSignalStrength();
         }
         if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            GsmCellLocation cellLocation = (GsmCellLocation) tm.getCellLocation();
-            LAC = cellLocation.getLac();
-            cellID = cellLocation.getCid();
+            CellInfo info =  tm.getAllCellInfo().get(0);
+            if(info instanceof CellInfoGsm) {
+                final CellIdentityGsm identityGsm = ((CellInfoGsm) info).getCellIdentity();
+                LAC = String.valueOf(identityGsm.getLac());
+                cellID = identityGsm.getCid();
+            }
+            if(info instanceof CellInfoLte) {
+                final CellIdentityLte identityLte = ((CellInfoLte) info).getCellIdentity();
+                LAC = "LTE has no LAC";
+                cellID = identityLte.getCi();
+            }
+            if(info instanceof CellInfoCdma) {
+                final CellIdentityCdma identityCdma = ((CellInfoCdma) info).getCellIdentity();
+                LAC = String.valueOf(identityCdma.getNetworkId());
+                cellID = identityCdma.getBasestationId();
+            }
         }
 
         String phoneInfo = "Cellular Information:\n";
